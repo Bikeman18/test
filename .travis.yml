@@ -5,6 +5,6 @@ env:
   - DB=mysql
 script:
   - bundle exec rake db:migrate
-  - bundle exec rspec spec/
+  - bundle exec rspec
 before_script:
   - mysql -e 'create database myapp_test'
