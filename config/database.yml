@@ -19,9 +19,10 @@ development:
 
 test: &test
   <<: *default
-  adapter: sqlite3
-  database: ":memory:"
-  timeout: 500
+  adapter: mysql2
+  database: myapp_test
+  username: travis
+  encoding: utf8
 
 production:
   <<: *default

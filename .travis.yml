@@ -4,7 +4,7 @@ rvm:
 env:
   - DB=mysql
 script:
-  - bundle exec rake db:migrate RAILS_ENV=test
+  - bin/rails db:migrate RAILS_ENV=test
   - bundle exec rake db:test:prepare
   - bundle exec rspec
 before_script:
