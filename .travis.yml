@@ -1,14 +1,20 @@
 language: ruby
 rvm:
-  - "2.3.1"
+- 2.3.1
 env:
+  matrix:
   - DB=mysql
+  global:
+    secure: iHLry6J5vj9DmudzG+3NB/dZ7IAumdnyBcMSdfp9Z5ufHcfkR0A0Y/W8nGOwCTVbxTGQSikrRbwBGryykIl/4hSjfgM6KEeAng9SBc0t/AQOR5MrXcRj/wHV3PrSoj91N4c1PBrSSs8eBtDMgSLIK6nl6+kgmd+VUy0LiIcHmaaBeqAg4j2bDnueInlnWj1WehwJP3Pv4w6Flo9S60MxDc1pHwC4JltIN+54aI07zmt4GiiknzQftI7eo7jwygYouMxkTeb1RWq/5SCKRDx357s6ntenVrWxFLVsMHIxalLOXBN2HrU/eNTH7mAVSolFkcwb9uDligEU5sOguM40s5qoAOsvj3r1bMARIi+aqIKKXuxiWKxMgtr2Sa7PG9Dee2Qph7VhkouT19MA/6Fi2Dz02672lhM2uRYT8y+APH5F+Oyp/wSh0hlS3BrsfDojjBHvRTer7nnaxnfq7F1fTmjz28JXkvdfP0EpNOkTmksyw93as+sRddlcy8xy1ZDz3FhWp0ECgNbt51YnBxMt72FEH4X4mW8cXjEYEz43s7prbH4syWhYKQ4ognd3NVLKzzMpU/Q/7M5Qf+5HiaQqcZQAbvfHeEEB+oE5YKWKLc4HPuRT7AgJjULN4jhqvp1w1j+boTOJf8gRjIdugZHMF1HXG+t13k0MU7O1RejGq+0=
 script:
-  - bin/rails db:migrate RAILS_ENV=test
-  - bundle exec rake db:test:prepare
-  - bundle exec rspec
+- bin/rails db:migrate RAILS_ENV=test
+- bundle exec rake db:test:prepare
+- bundle exec rspec
 before_script:
-  - bundle install
-  - mysql -e 'create database myapp_test'
+- bundle install
+- mysql -e 'create database myapp_test'
 services:
-  - mysql
+- mysql
+after_success:
+  - "openssl aes-256-cbc -k $DEPLOY_KEY -in config/deploy_id_rsa_enc_travis -d -a -out config/deploy_id_rsa"
+  - "bundle exec cap production deploy"
